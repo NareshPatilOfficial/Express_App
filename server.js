@@ -1,7 +1,9 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const connectDB = require('./config/db');
 
 // Used morgan to logs of server
 const morgan = require('morgan');
@@ -9,11 +11,7 @@ const morgan = require('morgan');
 const server = express();
 
 // MongoDB SetUp
-let mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017');
-const db = mongoose.connection;
-db.on('error', (error) => console.log(error));
-db.once('open', () => console.log('Connected to MongoDB Database'));
+connectDB();
 
 server.listen(3000);
 
