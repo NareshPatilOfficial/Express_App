@@ -2,7 +2,7 @@ require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 
 // Used morgan to logs of server
@@ -20,15 +20,14 @@ server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'jade');
 
 server.use(morgan('dev'));
-server.use(express.json());
-server.use(express.urlencoded({ extended: false }));
-server.use(cookieParser());
+// server.use(express.json());
+// server.use(express.urlencoded({ extended: false }));
+// server.use(cookieParser());
 
 //Serving static files in Express
 server.use('/static',express.static(path.join(__dirname, 'public')));
 
 const usersRouter = require('./feature/Users/user.route');
-
 server.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
