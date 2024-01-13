@@ -1,50 +1,10 @@
-require('dotenv').config();
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-// const cookieParser = require('cookie-parser');
-const connectDB = require('./config/db');
+const app = require('./app');
 
-// Used morgan to logs of server
-const morgan = require('morgan');
+//find and test routes of an express application. on -> http://localhost:3000/api-docs
+const sitemap = require('express-sitemap-html');
+sitemap.swagger('My App APIs', app)
 
-const server = express();
-
-// MongoDB SetUp
-connectDB();
-
-server.listen(3000);
-
-// view engine setup
-server.set('views', path.join(__dirname, 'views'));
-server.set('view engine', 'jade');
-
-server.use(morgan('dev'));
-// server.use(express.json());
-// server.use(express.urlencoded({ extended: false }));
-// server.use(cookieParser());
-
-//Serving static files in Express
-server.use('/static',express.static(path.join(__dirname, 'public')));
-
-const usersRouter = require('./feature/Users/user.route');
-server.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-server.use(function(req, res, next) {
-  next(createError(404));
+const port = 3000
+app.listen(port, () => {
+  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
-
-// error handler
-server.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-
-module.exports = server;
