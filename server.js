@@ -27,13 +27,9 @@ server.use(cookieParser());
 //Serving static files in Express
 server.use('/static',express.static(path.join(__dirname, 'public')));
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const loginRouter = require('./routes/login');
+const usersRouter = require('./feature/Users/user.route');
 
-server.use('/', indexRouter);
 server.use('/users', usersRouter);
-server.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
 server.use(function(req, res, next) {
