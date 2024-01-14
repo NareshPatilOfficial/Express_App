@@ -15,5 +15,9 @@ const createUserService = (data) => {
     }).save();
 }
 
-module.exports = {getAllService, createUserService, getService}
+const updateService = (id, data) => {
+    return Users.findOneAndUpdate({_id:id}, data)
+}
+
+module.exports = {getAllService, createUserService, getService, updateService}
 

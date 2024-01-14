@@ -24,4 +24,15 @@ const createUserController = async (request, response, next) => {
     }
 }
 
-module.exports = {getAllController, createUserController, getController};
+const updateUserController = async (request, response, next) => {
+    try{
+        response.json(await services.updateService(request.params.id, request.body))
+    }catch(err){
+        console.log(err);
+
+        // if dome error occure during udapte data, go flow of next things it may be anythings like show 404 error for request
+        next();
+    }
+}
+
+module.exports = {getAllController, createUserController, getController, updateUserController};
