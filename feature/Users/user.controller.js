@@ -35,4 +35,12 @@ const updateUserController = async (request, response, next) => {
     }
 }
 
-module.exports = {getAllController, createUserController, getController, updateUserController};
+const deleteController = async (request, response, next) => {
+    try{
+        response.json(await services.deleteService(request.params.id));
+    }catch(error){
+        console.log(error);
+    }
+}
+
+module.exports = {getAllController, createUserController, getController, updateUserController, deleteController};

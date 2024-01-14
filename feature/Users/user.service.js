@@ -19,5 +19,9 @@ const updateService = (id, data) => {
     return Users.findOneAndUpdate({_id:id}, data)
 }
 
-module.exports = {getAllService, createUserService, getService, updateService}
+const deleteService = (id) => {
+    return Users.deleteOne({_id:id});
+}
+
+module.exports = {getAllService, createUserService, getService, updateService, deleteService}
 
