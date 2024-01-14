@@ -1,4 +1,5 @@
 const services = require('./user.service');
+const createError = require('http-errors');
 
 const getAllController = async (request, response, next) => {
     try{
@@ -18,9 +19,19 @@ const getController = async (request, response, next) => {
 
 const createUserController = async (request, response, next) => {
     try{
-        response.json(await services.createUserService(request.body));
+        await services.createUserService(request.body, response);
     }catch(error){
         console.log(error.message);
+        next();
+    }
+}
+
+const userLoginController = async (request, response, next) => {
+    try{
+        await services.loginService(request.body, response);
+    }catch(error){
+        console.log(error.message);
+        next();
     }
 }
 
@@ -43,4 +54,4 @@ const deleteController = async (request, response, next) => {
     }
 }
 
-module.exports = {getAllController, createUserController, getController, updateUserController, deleteController};
+module.exports = {getAllController, createUserController, getController, updateUserController, deleteController, userLoginController};
