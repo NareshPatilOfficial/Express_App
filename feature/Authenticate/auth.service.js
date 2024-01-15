@@ -7,7 +7,7 @@ const userInfoService = async(req, res, next) => {
         if(user){
             res.json(user); 
         }else{
-            res.status(401).json('user not found.')
+            res.status(401);
         }
     }catch(err){
         console.log(err);
