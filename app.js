@@ -15,7 +15,11 @@ app.use(morgan('dev'));
 // It allows your Express application to handle JSON-encoded data
 app.use(express.json());
 
+const validateToken = require('./middleware/validateToken');
 const usersRouter = require('./feature/Users/user.route');
 app.use('/users', usersRouter);
+
+const userInfoRoute = require('./feature/Authenticate/auth.route');
+app.use('/usersinfo', validateToken, userInfoRoute);
 
 module.exports = app;

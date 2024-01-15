@@ -1,5 +1,6 @@
 const Users = require('./user.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const getAllService = () => {
     return Users.find();
@@ -31,17 +32,37 @@ const createUserService = async (data, response) => {
     response.json(createUser);
 }
 
-const loginService = (body, response) => {
-    return Users.findOne({_id:body.id})
-    .then(data => {
-        bcrypt.compare(body.password ,data.password, (err, res) => {
+const loginService = async (body, response) => {
+    const { email, password } = body;
+
+    if(!email || !password){
+        response.status(401).json('EMail and password is mandatory for login.');
+    }
+
+    const userData = await Users.findOne({email});
+
+    if(userData){
+        bcrypt.compare(password ,userData.password, (err, res) => {
             if(res){
-                response.json({email:data.email, username:data.name});
+                const accessToken = jwt.sign({
+                    user:{
+                        username:userData.name,
+                        email:userData.email,
+                        id:userData._id
+                    }
+                },
+                process.env.ACCESSTOKEN_SECRET_KRY,
+                {expiresIn:'1m'}
+                ); 
+
+                response.json({email:userData.email, username:userData.name, accessToken});
             }else {
                 response.status(401).json("Wrong Password!");
             }   
         })
-    });
+    } else {
+        response.status(401).json("Email OR password is wrong.");
+    }
 }
 
 const updateService = (id, data) => {
